@@ -11,29 +11,29 @@ import { questions } from './Data';
 
 const PlayQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(100);
+  const [totalTimeLeft, setTotalTimeLeft] = useState(100); // Total time for all questions
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const [userAnswers, setUserAnswers] = useState([]);
   const router = useRouter();
   const controls = useAnimation();
 
   useEffect(() => {
-    if (timeLeft === 0) {
-      handleNextQuestion();
+    if (totalTimeLeft === 0) {
+      endQuiz();
     }
     const timer = setInterval(() => {
-      setTimeLeft((prevTime) => Math.max(prevTime - 1, 0));
+      setTotalTimeLeft((prevTime) => Math.max(prevTime - 1, 0));
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [timeLeft]);
+  }, [totalTimeLeft]);
 
   useEffect(() => {
     controls.start({
-      width: `${timeLeft}%`,
-      transition: { duration: 1, ease: 'linear' }
+      width: `${(totalTimeLeft / 100) * 100}%`,
+      transition: { duration: 1, ease: 'linear' },
     });
-  }, [timeLeft, controls]);
+  }, [totalTimeLeft, controls]);
 
   const handleOptionClick = (option) => {
     setSelectedAnswer(option);
@@ -45,11 +45,28 @@ const PlayQuiz = () => {
 
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
-      setTimeLeft(100);
     } else {
-      router.push(`/user/results`);
+      endQuiz();
     }
   };
+
+  const endQuiz = () => {
+    localStorage.setItem('userAnswers', JSON.stringify([...userAnswers, selectedAnswer]));
+    router.push('/user/results');
+  };
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      event.preventDefault();
+      event.returnValue = ''; // Required for Chrome
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+    };
+  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-b from-purple-400 to-blue-600">
@@ -63,17 +80,21 @@ const PlayQuiz = () => {
             initial={{ width: '100%' }}
           />
           <div className="flex justify-between items-center mb-4">
-            <h3 className="text-2xl font-semibold text-center text-gray-800">{questions[currentQuestion].question}</h3>
+            <h3 className="text-2xl font-semibold text-center text-gray-800">
+              {questions[currentQuestion].question}
+            </h3>
             <div className="flex items-center text-gray-700">
               <FaClock className="mr-2 text-blue-500" />
-              <span>{timeLeft} seconds left</span>
+              <span>{totalTimeLeft} seconds left</span>
             </div>
           </div>
           <ul className="space-y-3 text-black">
             {questions[currentQuestion].options.map((option, index) => (
               <li
                 key={index}
-                className={`p-3 text-center bg-purple-200 rounded-lg cursor-pointer transition-colors ${selectedAnswer === option ? 'bg-purple-400 text-white' : 'hover:bg-purple-300'}`}
+                className={`p-3 text-center bg-purple-200 rounded-lg cursor-pointer transition-colors ${
+                  selectedAnswer === option ? 'bg-purple-400 text-white' : 'hover:bg-purple-300'
+                }`}
                 onClick={() => handleOptionClick(option)}
                 aria-selected={selectedAnswer === option}
                 role="option"
