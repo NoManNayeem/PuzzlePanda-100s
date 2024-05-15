@@ -33,15 +33,15 @@ const AboutPage = () => {
               Project Lead || Software Engineer || Generative AI Expert
             </p>
             <div className="flex flex-wrap justify-center space-x-2 sm:space-x-4 mt-4">
-              <Link href="https://github.com/NoManNayeem/" target="_blank" rel="noopener noreferrer"  className="inline-flex items-center px-4 sm:px-6 py-3 rounded text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition-all duration-300">
+              <Link href="https://github.com/NoManNayeem/" target="_blank" rel="noopener noreferrer"  className="mx-2 mt-2 inline-flex items-center px-4 sm:px-6 py-3 rounded text-white bg-gray-900 hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-800 focus:ring-offset-2 transition-all duration-300">
                   <FaGithub className="mr-2" />
                   GitHub
               </Link>
-              <Link href="https://www.linkedin.com/in/nayeemislam60053" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 sm:px-6 py-3 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-all duration-300">
+              <Link href="https://www.linkedin.com/in/nayeemislam60053" target="_blank" rel="noopener noreferrer" className="mx-2 mt-2 inline-flex items-center px-4 sm:px-6 py-3 rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition-all duration-300">
                   <FaLinkedin className="mr-2" />
                   LinkedIn
               </Link>
-              <Link href="https://medium.com/@nomannayeem" target="_blank" rel="noopener noreferrer" className="inline-flex items-center px-4 sm:px-6 py-3 rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 transition-all duration-300">
+              <Link href="https://medium.com/@nomannayeem" target="_blank" rel="noopener noreferrer" className="mx-2 mt-2 inline-flex items-center px-4 sm:px-6 py-3 rounded text-white bg-green-500 hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-green-600 focus:ring-offset-2 transition-all duration-300">
                   <FaMediumM className="mr-2" />
                   Medium
               </Link>
