@@ -13,12 +13,7 @@ const Result = () => {
   const router = useRouter();
   const [userAnswers, setUserAnswers] = useState([]);
 
-  useEffect(() => {
-    const answers = searchParams.get('answers');
-    if (answers) {
-      setUserAnswers(JSON.parse(decodeURIComponent(answers)));
-    }
-  }, [searchParams]);
+
 
   const handlePlayAgain = () => {
     router.push('/user');
