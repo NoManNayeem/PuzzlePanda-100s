@@ -4,14 +4,13 @@ import PrivateFooter from '../LoggedUserComponents/Private_Footer';
 import PrivateHeader from '../LoggedUserComponents/Private_Header';
 import PrivateNavBar from '../LoggedUserComponents/Private_NavBar';
 import { useEffect, useState } from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter} from 'next/navigation';
 import { motion } from 'framer-motion';
 import { FaRedo } from 'react-icons/fa';
 import { questions } from '../Data';
 
 const Result = () => {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const [userAnswers, setUserAnswers] = useState([]);
 
   useEffect(() => {
