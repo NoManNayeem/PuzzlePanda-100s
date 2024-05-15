@@ -21,16 +21,6 @@ export const questions = [
       correctAnswer: "H2O",
     },
     {
-      question: "Which element has the atomic number 1?",
-      options: ["Helium", "Oxygen", "Hydrogen", "Carbon"],
-      correctAnswer: "Hydrogen",
-    },
-    {
-      question: "What is the largest ocean on Earth?",
-      options: ["Atlantic Ocean", "Indian Ocean", "Arctic Ocean", "Pacific Ocean"],
-      correctAnswer: "Pacific Ocean",
-    },
-    {
       question: "Which planet is known as the 'Morning Star' or 'Evening Star'?",
       options: ["Mercury", "Venus", "Mars", "Jupiter"],
       correctAnswer: "Venus",
@@ -51,11 +41,7 @@ export const questions = [
       correctAnswer: "Diamond",
     },
     // Bengali quizzes
-    {
-      question: "বাংলাদেশের রাজধানী কোনটি?",
-      options: ["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "সিলেট"],
-      correctAnswer: "ঢাকা",
-    },
+    
     {
       question: "বাংলাদেশের জাতীয় ফুল কোনটি?",
       options: ["গোলাপ", "লাল শাপলা", "টগর", "বকুল"],
@@ -75,16 +61,6 @@ export const questions = [
       question: "বাংলাদেশের স্বাধীনতার ঘোষণা কবে হয়?",
       options: ["২৬শে মার্চ", "১৬ই ডিসেম্বর", "২১শে ফেব্রুয়ারি", "৭ই মার্চ"],
       correctAnswer: "২৬শে মার্চ",
-    },
-    {
-      question: "কোনটি বাংলাদেশের জাতীয় পশু?",
-      options: ["বাঘ", "হাতি", "হরিণ", "রাজধানী"],
-      correctAnswer: "বাঘ",
-    },
-    {
-      question: "কোনটি বাংলাদেশের সবচেয়ে বড় জেলা?",
-      options: ["রংপুর", "চট্টগ্রাম", "সিলেট", "দিনাজপুর"],
-      correctAnswer: "চট্টগ্রাম",
     },
     {
       question: "বাংলাদেশের প্রথম রাষ্ট্রপতি কে ছিলেন?",
