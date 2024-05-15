@@ -35,11 +35,11 @@ export default function Home() {
         <div className="text-center w-full max-w-md px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl text-white font-bold mb-4 animate-pulse">Win an Instant 5,000 Points!</h2>
           <p className="text-white mb-6">Answer 10 questions correctly & win!</p>
-          <form onSubmit={handleLogin}>
+          <form onSubmit={handleLogin} className="">
             {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
             <div className="flex flex-col sm:flex-row justify-center items-center mb-6 sm:space-x-2 space-y-2 sm:space-y-0">
               <div className="flex w-full sm:w-auto">
-                <span className="flex-shrink-0 px-4 py-2 bg-purple-600 text-white rounded-l-full sm:rounded-full shadow-md">+88</span>
+                <span className="flex-shrink-0 px-4 py-2 bg-purple-600 text-white rounded-l-full sm:rounded-l-full shadow-md">+88</span>
                 <input
                   type="text"
                   placeholder="Enter your phone number"
