@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 // pages/index.js
 import Header from './landingPageComponents/Header';
@@ -12,13 +12,22 @@ export default function Home() {
       <Header />
       <NavBar />
       <Slider />
-      <div className="flex-grow flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-800 p-4">
-        <div className="text-center w-full max-w-md px-4">
-          <h2 className="text-3xl text-white font-bold mb-4">Win an Instant 5,000 Points!</h2>
+      <div className="flex-grow flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-800 p-6">
+        <div className="text-center w-full max-w-md px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl text-white font-bold mb-4 animate-pulse">Win an Instant 5,000 Points!</h2>
           <p className="text-white mb-6">Answer 10 questions correctly & win!</p>
-          <div className="flex justify-center items-center mb-6 space-x-2">
-            <input type="tel" placeholder="+880" className="flex-grow px-4 py-2 border border-purple-300 rounded-l-full focus:outline-none" />
-            <button className="bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-r-full transition duration-200 ease-in-out">Subscribe/Login</button>
+          <div className="flex flex-col sm:flex-row justify-center items-center mb-6 sm:space-x-2 space-y-2 sm:space-y-0">
+            <div className="flex w-full sm:w-auto">
+              <span className="flex-shrink-0 px-4 py-2 bg-purple-600 text-white rounded-l-full sm:rounded-full shadow-md">+880</span>
+              <input
+                type="tel"
+                placeholder="Enter your phone number"
+                className="flex-grow px-4 py-2 border border-purple-300 rounded-r-full sm:rounded-l-none sm:rounded-r-full focus:outline-none shadow-md"
+              />
+            </div>
+            <button className="w-full sm:w-auto bg-purple-600 hover:bg-purple-500 text-white px-4 py-2 rounded-full transition duration-200 ease-in-out shadow-md">
+              Subscribe/Login
+            </button>
           </div>
           <p className="text-purple-300 text-sm">First 2 days free then 4 points/day</p>
         </div>

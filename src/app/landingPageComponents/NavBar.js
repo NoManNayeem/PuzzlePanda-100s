@@ -43,7 +43,7 @@ export default function NavBar() {
                     <Link href="/contact" className="flex items-center hover:text-purple-300">
                         <FaEnvelope className="mr-1" /> Contact
                     </Link>
-                    <Link href="/signup" className="flex items-center hover:text-purple-300">
+                    <Link href="/sign-up" className="flex items-center hover:text-purple-300">
                         <FaUserPlus className="mr-1" /> Sign Up
                     </Link>
                 </div>
@@ -59,7 +59,7 @@ export default function NavBar() {
                     <Link href="/contact" className="flex items-center hover:text-purple-300">
                         <FaEnvelope className="mr-1" /> Contact
                     </Link>
-                    <Link href="/signup" className="flex items-center hover:text-purple-300">
+                    <Link href="/sign-up" className="flex items-center hover:text-purple-300">
                         <FaUserPlus className="mr-1" /> Sign Up
                     </Link>
                 </div>
