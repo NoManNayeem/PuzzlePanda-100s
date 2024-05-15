@@ -1,127 +1,99 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
 import PrivateFooter from './LoggedUserComponents/Private_Footer';
 import PrivateHeader from './LoggedUserComponents/Private_Header';
 import PrivateNavBar from './LoggedUserComponents/Private_NavBar';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { motion, useAnimation } from 'framer-motion';
+import { FaClock, FaArrowRight } from 'react-icons/fa';
+import { questions } from './Data';
 
-const questions = [
-  {
-    question: "What is the capital of France?",
-    options: ["Berlin", "Madrid", "Paris", "Lisbon"],
-    answer: "Paris",
-  },
-  {
-    question: "Which planet is known as the Red Planet?",
-    options: ["Earth", "Mars", "Jupiter", "Saturn"],
-    answer: "Mars",
-  },
-  // Add more questions here
-];
-
-
-
-export default function Quiz() {
+const PlayQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [score, setScore] = useState(0);
-  const [selectedOption, setSelectedOption] = useState('');
-  const [showScore, setShowScore] = useState(false);
-  const [error, setError] = useState(null);
-  const [feedback, setFeedback] = useState(null);
+  const [timeLeft, setTimeLeft] = useState(100);
+  const [selectedAnswer, setSelectedAnswer] = useState(null);
+  const [userAnswers, setUserAnswers] = useState([]);
+  const router = useRouter();
+  const controls = useAnimation();
 
+  useEffect(() => {
+    if (timeLeft === 0) {
+      handleNextQuestion();
+    }
+    const timer = setInterval(() => {
+      setTimeLeft((prevTime) => Math.max(prevTime - 1, 0));
+    }, 1000);
 
+    return () => clearInterval(timer);
+  }, [timeLeft]);
 
-  const handleOptionChange = (e) => {
-    setSelectedOption(e.target.value);
-    setError(null);
-    setFeedback(null);
+  useEffect(() => {
+    controls.start({
+      width: `${timeLeft}%`,
+      transition: { duration: 1, ease: 'linear' }
+    });
+  }, [timeLeft, controls]);
+
+  const handleOptionClick = (option) => {
+    setSelectedAnswer(option);
   };
 
   const handleNextQuestion = () => {
-    if (!selectedOption) {
-      setError('Please select an option!');
-      return;
-    }
+    setUserAnswers([...userAnswers, selectedAnswer]);
+    setSelectedAnswer(null);
 
-    if (selectedOption === questions[currentQuestion].answer) {
-      setScore(score + 1);
-      setFeedback('Correct!');
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion(currentQuestion + 1);
+      setTimeLeft(100);
     } else {
-      setFeedback('Incorrect!');
+      router.push(`/user/results`);
     }
-
-    setTimeout(() => {
-      setSelectedOption('');
-      setError(null);
-      setFeedback(null);
-
-      if (currentQuestion < questions.length - 1) {
-        setCurrentQuestion(currentQuestion + 1);
-      } else {
-        setShowScore(true);
-      }
-    }, 1000);
-  };
-
-  const handleRestartQuiz = () => {
-    setCurrentQuestion(0);
-    setScore(0);
-    setSelectedOption('');
-    setShowScore(false);
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-b from-gray-100 to-gray-200">
+    <div className="flex flex-col min-h-screen bg-gradient-to-b from-purple-400 to-blue-600">
       <PrivateHeader />
       <PrivateNavBar />
-      <div className="flex-grow flex items-center justify-center bg-gradient-to-b from-gray-100 to-gray-200 p-6 text-blcak">
-        <div className="text-center w-full max-w-md px-4 sm:px-6 lg:px-8">
-          {showScore ? (
-            <div>
-              <h2 className="text-3xl md:text-4xl text-black font-bold mb-4 animate-pulse">Your Score: {score}/{questions.length}</h2>
-              <button
-                onClick={handleRestartQuiz}
-                className="mt-4 bg-purple-600 hover:bg-purple-500 text-black px-4 py-2 rounded-full transition duration-200 ease-in-out shadow-md"
+      <div className="flex flex-col items-center justify-center flex-grow px-4 py-8">
+        <div className="relative w-full max-w-lg p-6 bg-white border-2 border-gray-300 rounded-lg shadow-md">
+          <motion.div
+            className="absolute top-0 left-0 h-2 bg-blue-500 rounded"
+            animate={controls}
+            initial={{ width: '100%' }}
+          />
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="text-2xl font-semibold text-center text-gray-800">{questions[currentQuestion].question}</h3>
+            <div className="flex items-center text-gray-700">
+              <FaClock className="mr-2 text-blue-500" />
+              <span>{timeLeft} seconds left</span>
+            </div>
+          </div>
+          <ul className="space-y-3 text-black">
+            {questions[currentQuestion].options.map((option, index) => (
+              <li
+                key={index}
+                className={`p-3 text-center bg-purple-200 rounded-lg cursor-pointer transition-colors ${selectedAnswer === option ? 'bg-purple-400 text-white' : 'hover:bg-purple-300'}`}
+                onClick={() => handleOptionClick(option)}
+                aria-selected={selectedAnswer === option}
+                role="option"
               >
-                Restart Quiz
-              </button>
-            </div>
-          ) : (
-            <div>
-              <h2 className="text-3xl md:text-4xl text-black font-bold mb-4 animate-pulse">{questions[currentQuestion].question}</h2>
-              <div className="text-sm text-gray-300 mb-4">{`Question ${currentQuestion + 1} of ${questions.length}`}</div>
-              <form>
-                {questions[currentQuestion].options.map((option) => (
-                  <div key={option} className="mb-4">
-                    <label className="inline-flex items-center">
-                      <input
-                        type="radio"
-                        name="quiz-option"
-                        value={option}
-                        className="form-radio text-purple-600"
-                        checked={selectedOption === option}
-                        onChange={handleOptionChange}
-                      />
-                      <span className="ml-2 text-black">{option}</span>
-                    </label>
-                  </div>
-                ))}
-                {error && <p className="text-red-500 text-sm mb-4">{error}</p>}
-                {feedback && <p className={`text-sm mb-4 ${feedback === 'Correct!' ? 'text-green-500' : 'text-red-500'}`}>{feedback}</p>}
-                <button
-                  type="button"
-                  onClick={handleNextQuestion}
-                  className="mt-4 bg-purple-600 hover:bg-purple-500 text-black px-4 py-2 rounded-full transition duration-200 ease-in-out shadow-md"
-                >
-                  Next Question
-                </button>
-              </form>
-            </div>
-          )}
+                {option}
+              </li>
+            ))}
+          </ul>
+          <button
+            onClick={handleNextQuestion}
+            className="w-full px-4 py-2 mt-6 font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 flex items-center justify-center transition-colors disabled:opacity-50"
+            disabled={!selectedAnswer}
+          >
+            Next <FaArrowRight className="ml-2" />
+          </button>
         </div>
       </div>
       <PrivateFooter />
     </div>
   );
-}
+};
+
+export default PlayQuiz;
