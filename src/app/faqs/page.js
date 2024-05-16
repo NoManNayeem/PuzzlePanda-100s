@@ -21,7 +21,6 @@ const FAQs = () => {
           const response = await fetch(faqsAPI);
           if (response.ok) {
             const data = await response.json();
-            console.log(data);
             if (Array.isArray(data.results)) {
               setFaqs(data.results);
               localStorage.setItem('faqs', JSON.stringify(data.results));
