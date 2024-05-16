@@ -12,5 +12,9 @@ const registerAPI = `${baseAPI}/register/`;
 const faqsAPI = `${baseAPI}/faqs/`;
 const slidersAPI = `${baseAPI}/sliders/`;
 
+
+export const profileDetailAPI = `${baseAPI}/profile/`;
+export const profileCreateAPI = `${baseAPI}/profile/create/`;
+
 // Export the constants
 export { baseAPI, loginAPI, refreshAPI, verifyAPI, registerAPI, faqsAPI, slidersAPI };
