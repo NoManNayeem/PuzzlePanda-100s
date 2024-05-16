@@ -82,7 +82,7 @@ const UserPage = () => {
       <PrivateHeader />
       <PrivateNavBar />
       <div className="relative flex-grow flex flex-col items-center justify-center py-12">
-        <div className="fixed top-20 left-auto z-50 animate-pulse">
+        <div className="fixed bottom-20 left-auto z-50 animate-pulse">
           <button
             onClick={handlePlayNowClick}
             className={`inline-flex items-center justify-center py-4 px-8 rounded-full shadow-lg transition-transform transform hover:scale-110 focus:ring-4 focus:ring-indigo-500 ${
