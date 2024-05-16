@@ -97,10 +97,10 @@ const Result = () => {
                                             {userAnswers[index]}
                                         </span>
                                     </p>
-                                    <p className="text-gray-700">
+                                    {/* <p className="text-gray-700">
                                         <span className="font-semibold">Correct Answer:</span> 
                                         <span className="text-green-600 ml-2">{question.correct_answer}</span>
-                                    </p>
+                                    </p> */}
                                 </div>
                             ))}
                         </div>
