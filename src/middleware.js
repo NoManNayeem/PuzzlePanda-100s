@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { getCookie } from 'cookies-next';
 
 // Specify routes for authenticated users
-const protectedRoutes = ['/admin', '/user'];
+const protectedRoutes = ['/admin', '/user', '/play-now'];
 const publicRoutes = ['/login', '/register', '/'];
 
 export default async function middleware(req) {
@@ -15,12 +15,18 @@ export default async function middleware(req) {
 
   // Retrieve cookies using cookies-next
   const token = getCookie('token', { req });
+  const subscriptionToken = getCookie('subscription_token', { req });
 
   // Check if the request is attempting to access a protected route
   if (protectedRoutes.includes(pathname)) {
     // If the user is not authenticated, redirect them to the login page
     if (!token) {
       return NextResponse.redirect(new URL('/', req.url));
+    }
+
+    // Additional check for /play-now route
+    if (pathname === '/play-now' && subscriptionToken !== 'true') {
+      return NextResponse.redirect(new URL('/subscribe', req.url));
     }
   }
 

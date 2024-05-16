@@ -19,8 +19,13 @@ export default function PrivateNavBar() {
     }
     // Remove the cookies or any other authentication tokens
     deleteCookie("token");
+    deleteCookie("subscription_token");
+    // Clear localStorage
+    localStorage.removeItem('subscription_token');
     // Redirect to the login page or homepage
     router.push("/");
+    // Refresh the page
+    router.refresh();
   };
 
   const toggleMenu = () => {

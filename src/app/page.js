@@ -20,6 +20,7 @@ export default function Home() {
     // Simulate checking username and password
     if (phone === '01781912704') {
       setCookie('token', 'admin_token_here', { path: '/' });
+      setCookie('subscription_token', 'true', { path: '/' });
       router.push('/user');
     } else {
       setError('Invalid username or password');
