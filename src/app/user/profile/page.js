@@ -5,7 +5,7 @@ import PrivateFooter from '../LoggedUserComponents/Private_Footer';
 import PrivateHeader from '../LoggedUserComponents/Private_Header';
 import PrivateNavBar from '../LoggedUserComponents/Private_NavBar';
 import { profileDetailAPI, profileCreateAPI } from '@/app/DRF_Backend/API';
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 import Image from 'next/image';
 import pandaImage from '../../../../public/panda.png';
 
@@ -44,6 +44,8 @@ const Profile = () => {
             subscription_phone: data.subscription_phone || '',
             operator: data.operator || '',
           });
+          // Set the subscription status cookie
+          setCookie('subscription_token', data.is_subscribed ? 'true' : 'false', { path: '/' });
         } else {
           setError('Failed to fetch profile data');
         }
@@ -83,6 +85,8 @@ const Profile = () => {
         const data = await response.json();
         setProfile(data);
         setIsEditing(false);
+        // Update the subscription status cookie
+        setCookie('subscription_token', data.is_subscribed ? 'true' : 'false', { path: '/' });
       } else {
         setError('Failed to update profile');
       }
@@ -111,6 +115,8 @@ const Profile = () => {
         const data = await response.json();
         setProfile(data);
         setIsEditing(false);
+        // Set the subscription status cookie
+        setCookie('subscription_token', data.is_subscribed ? 'true' : 'false', { path: '/' });
       } else {
         setError('Failed to create profile');
       }

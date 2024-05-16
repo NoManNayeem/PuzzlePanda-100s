@@ -34,7 +34,7 @@ export default function Home() {
       if (response.ok) {
         const data = await response.json();
         setCookie('token', data.access, { path: '/' });
-        setCookie('subscription_token', 'true', { path: '/' });
+        // setCookie('subscription_token', 'true', { path: '/' });
         router.push('/user');
       } else {
         const errorData = await response.json();

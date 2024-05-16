@@ -6,7 +6,8 @@ import { FaPlay, FaTable, FaMedal, FaQuoteLeft } from 'react-icons/fa';
 import PrivateFooter from './LoggedUserComponents/Private_Footer';
 import PrivateNavBar from './LoggedUserComponents/Private_NavBar';
 import PrivateHeader from './LoggedUserComponents/Private_Header';
-import { getCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
+import { profileDetailAPI } from '@/app/DRF_Backend/API';
 
 const UserPage = () => {
   const [user, setUser] = useState({
@@ -23,22 +24,40 @@ const UserPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const userData = {
-        fullName: 'John Doe',
-        stats: {
-          totalQuizzes: 10,
-          correctAnswers: 70,
-          wrongAnswers: 30,
-        },
-      };
+      const token = getCookie('token');
+      if (!token) {
+        setError('No authentication token found');
+        return;
+      }
+      try {
+        const response = await fetch(profileDetailAPI, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+        });
+        if (response.ok) {
+          const data = await response.json();
+          const isSubscribed = data;
+          console.log('Subscription',isSubscribed)
+          setCookie('subscription_token', isSubscribed ? 'true' : 'false', { path: '/' });
 
-      const subscriptionToken = getCookie('subscription_token');
-      const isSubscribed = subscriptionToken === 'true';
-
-      setUser({
-        ...userData,
-        isSubscribed: isSubscribed,
-      });
+          setUser({
+            fullName: data.full_name || 'N/A',
+            isSubscribed: isSubscribed,
+            stats: {
+              totalQuizzes: data.total_quizzes || 0,
+              correctAnswers: data.correct_answers || 0,
+              wrongAnswers: data.wrong_answers || 0,
+            },
+          });
+        } else {
+          setError('Failed to fetch profile data');
+        }
+      } catch (error) {
+        console.error('An error occurred while fetching profile data', error);
+      }
     };
 
     fetchUserData();
@@ -51,7 +70,6 @@ const UserPage = () => {
       router.push('/user/subscribe');
     }
   };
-
 
   const [quote, setQuote] = useState("You Imagine, I craft!");
   const [author, setAuthor] = useState("Nayeem Islam");
@@ -75,7 +93,6 @@ const UserPage = () => {
         console.error(error);
       });
   }, []);
-
 
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
@@ -128,12 +145,12 @@ const UserPage = () => {
                 Discover:
               </h2>
               {quote ? (
-                  <>
-                    <p>{quote}<span className='font-bold mx-2'>-{author}</span></p>
-                  </>
-                ) : (
-                  <p>Loading quote...</p>
-                )}
+                <>
+                  <p>{quote}<span className='font-bold mx-2'>-{author}</span></p>
+                </>
+              ) : (
+                <p>Loading quote...</p>
+              )}
             </div>
           </div>
 
