@@ -56,7 +56,7 @@ const Result = () => {
                             <Image
                                 src={pandaImage}
                                 alt="Picture of the Engineer"
-                                layout="fit"
+                                fit
                             />
                         </div>
                         <div className='mb-auto mt-auto'>

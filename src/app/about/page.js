@@ -22,7 +22,7 @@ const AboutPage = () => {
               <Image
                 src={profileImage}
                 alt="Picture of the Engineer"
-                layout="fit"
+                fit
               />
             </Link>
           </div>

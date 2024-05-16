@@ -39,7 +39,7 @@ export default function Slider() {
               src={src}
               alt={`Slide ${index + 1}`}
               className="object-cover object-center w-full h-full"
-              layout="fill"
+              fill
               priority={index === 0}
             />
           </div>
