@@ -4,7 +4,7 @@ import pandalogo from "../../../../public/panda.png";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaSignOutAlt } from "react-icons/fa";
+import { FaSignOutAlt, FaUser } from "react-icons/fa";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
@@ -31,7 +31,7 @@ export default function PrivateNavBar() {
     <nav className="bg-gradient-to-r from-purple-900 to-purple-700 text-white p-4">
       <div className="flex justify-between items-center">
         <Link href="/">
-          <div className="flex items-center">
+          <div className="flex items-center cursor-pointer">
             <Image
               src={pandalogo}
               alt="PuzzlePanda Logo"
@@ -58,9 +58,12 @@ export default function PrivateNavBar() {
           </svg>
         </button>
         <div className="hidden md:flex space-x-4">
+          <Link href="/user/profile" className="flex items-center hover:text-purple-300">
+              <FaUser className="mr-2" />
+          </Link>
           <button
             onClick={handleLogout}
-            className="mt-4 p-2 bg-red-600 text-white flex justify-center items-center rounded hover:bg-red-700 transition duration-300 w-full"
+            className="p-2 bg-red-600 text-white flex justify-center items-center rounded hover:bg-red-700 transition duration-300"
           >
             <FaSignOutAlt className="mr-2" />
             Logout
@@ -69,9 +72,13 @@ export default function PrivateNavBar() {
       </div>
       {isOpen && (
         <div className="md:hidden flex flex-col space-y-4 mt-4">
+          <Link href="/user/profile" className="p-2 bg-blue-600 text-white flex justify-center items-center rounded hover:bg-blue-700 transition duration-300">
+              <FaUser className="mr-2" />
+              Profile
+          </Link>
           <button
             onClick={handleLogout}
-            className="mt-4 p-2 bg-red-600 text-white flex justify-center items-center rounded hover:bg-red-700 transition duration-300 w-full"
+            className="p-2 bg-red-600 text-white flex justify-center items-center rounded hover:bg-red-700 transition duration-300"
           >
             <FaSignOutAlt className="mr-2" />
             Logout
