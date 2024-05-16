@@ -13,18 +13,13 @@ export default function PrivateNavBar() {
   const router = useRouter();
 
   const handleLogout = async () => {
-    // Prompt the user to confirm they want to logout
     if (!confirm("Are you sure you want to log out?")) {
       return;
     }
-    // Remove the cookies or any other authentication tokens
     deleteCookie("token");
     deleteCookie("subscription_token");
-    // Clear localStorage
     localStorage.removeItem('subscription_token');
-    // Redirect to the login page or homepage
     router.push("/");
-    // Refresh the page
     router.refresh();
   };
 
@@ -33,7 +28,7 @@ export default function PrivateNavBar() {
   };
 
   return (
-    <nav className="bg-gradient-to-r from-purple-900 to-purple-700 text-white p-4">
+    <nav className="bg-gradient-to-r from-purple-900 to-purple-700 text-white p-4 shadow-md">
       <div className="flex justify-between items-center">
         <Link href="/">
           <div className="flex items-center cursor-pointer">
@@ -47,7 +42,12 @@ export default function PrivateNavBar() {
             <h1 className="text-lg font-bold">PuzzlePanda</h1>
           </div>
         </Link>
-        <button onClick={toggleMenu} className="md:hidden focus:outline-none">
+        <button
+          onClick={toggleMenu}
+          className="md:hidden focus:outline-none"
+          aria-expanded={isOpen}
+          aria-controls="mobile-menu"
+        >
           <svg
             className="h-6 w-6"
             fill="none"
@@ -64,32 +64,36 @@ export default function PrivateNavBar() {
         </button>
         <div className="hidden md:flex space-x-4">
           <Link href="/user/profile" className="flex items-center hover:text-purple-300">
-              <FaUser className="mr-2" />
+            <FaUser className="mr-2" />
+            Profile
           </Link>
           <button
             onClick={handleLogout}
-            className="p-2 bg-red-600 text-white flex justify-center items-center rounded hover:bg-red-700 transition duration-300"
+            className="p-2 bg-red-600 text-white flex items-center rounded hover:bg-red-700 transition duration-300"
           >
             <FaSignOutAlt className="mr-2" />
             Logout
           </button>
         </div>
       </div>
-      {isOpen && (
-        <div className="md:hidden flex flex-col space-y-4 mt-4">
-          <Link href="/user/profile" className="p-2 bg-blue-600 text-white flex justify-center items-center rounded hover:bg-blue-700 transition duration-300">
-              <FaUser className="mr-2" />
-              Profile
+      <div id="mobile-menu" className={`md:hidden ${isOpen ? "block" : "hidden"} transition duration-300 ease-in-out`}>
+        <div className="flex flex-col space-y-4 mt-4">
+          <Link
+            href="/user/profile"
+            className="p-2 bg-blue-600 text-white flex items-center rounded hover:bg-blue-700 transition duration-300"
+          >
+            <FaUser className="mr-2" />
+            Profile
           </Link>
           <button
             onClick={handleLogout}
-            className="p-2 bg-red-600 text-white flex justify-center items-center rounded hover:bg-red-700 transition duration-300"
+            className="p-2 bg-red-600 text-white flex items-center rounded hover:bg-red-700 transition duration-300"
           >
             <FaSignOutAlt className="mr-2" />
             Logout
           </button>
         </div>
-      )}
+      </div>
     </nav>
   );
 }
