@@ -10,6 +10,7 @@ const refreshAPI = `${baseAPI}/api/refresh/`;
 const verifyAPI = `${baseAPI}/api/verify/`;
 const registerAPI = `${baseAPI}/register/`;
 const faqsAPI = `${baseAPI}/faqs/`;
+const slidersAPI = `${baseAPI}/sliders/`;
 
 // Export the constants
-export { baseAPI, loginAPI, refreshAPI, verifyAPI, registerAPI, faqsAPI };
+export { baseAPI, loginAPI, refreshAPI, verifyAPI, registerAPI, faqsAPI, slidersAPI };

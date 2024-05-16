@@ -1,9 +1,11 @@
 'use client';
 
+
+
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setCookie } from 'cookies-next';
-import { loginAPI } from './DRF_Backend/API';
+import { loginAPI,slidersAPI } from './DRF_Backend/API';
 import Header from './landingPageComponents/Header';
 import NavBar from './landingPageComponents/NavBar';
 import Slider from './landingPageComponents/Slider';
