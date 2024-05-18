@@ -30,7 +30,7 @@ export default function PrivateNavBar() {
   return (
     <nav className="bg-gradient-to-r from-purple-900 to-purple-700 text-white p-4 shadow-md">
       <div className="flex justify-between items-center">
-        <Link href="/">
+        <Link href="/user">
           <div className="flex items-center cursor-pointer">
             <Image
               src={pandalogo}

@@ -1,14 +1,14 @@
 'use client';
 
-import PrivateFooter from '../LoggedUserComponents/Private_Footer';
-import PrivateHeader from '../LoggedUserComponents/Private_Header';
-import PrivateNavBar from '../LoggedUserComponents/Private_NavBar';
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, useAnimation } from 'framer-motion';
 import { FaClock, FaArrowRight } from 'react-icons/fa';
 import { getCookie } from 'cookies-next';
-import { quizAPI } from '@/app/DRF_Backend/API';
+import PrivateFooter from '../LoggedUserComponents/Private_Footer';
+import PrivateHeader from '../LoggedUserComponents/Private_Header';
+import PrivateNavBar from '../LoggedUserComponents/Private_NavBar';
+import { quizAPI, validateResultAPI } from '@/app/DRF_Backend/API';
 
 const PlayQuiz = () => {
   const [questions, setQuestions] = useState([]);
@@ -31,17 +31,17 @@ const PlayQuiz = () => {
           'Authorization': `Bearer ${token}`
         }
       });
+      if (!response.ok) {
+        throw new Error('Failed to fetch questions');
+      }
       const data = await response.json();
-      // Split the options string into an array
       const formattedData = data.map(question => ({
         ...question,
         options: question.options.split(','),
       }));
       setQuestions(formattedData);
-      console.log('Questions:', formattedData); // Log the formatted questions
     } catch (error) {
       console.error('Error fetching questions:', error);
-      throw new Error('Error fetching questions');
     }
   };
 
@@ -100,9 +100,38 @@ const PlayQuiz = () => {
     }
   };
 
-  const endQuiz = () => {
-    localStorage.setItem('userAnswers', JSON.stringify([...userAnswers, selectedAnswer]));
-    router.push('/user/results');
+  const endQuiz = async () => {
+    const token = getCookie('token');
+    const quizIds = questions.map(question => question.id);
+    
+    const data = {
+      quiz_ids: quizIds,
+      user_answers: [...userAnswers, selectedAnswer],
+    };
+
+    localStorage.setItem('userAnswers', JSON.stringify(data.user_answers)); // Save answers to local storage
+
+    try {
+      const response = await fetch(validateResultAPI, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        console.log('Quiz results:', result);
+        router.push('/user/results');
+      } else {
+        const errorData = await response.json();
+        console.error('Error validating quiz results:', errorData);
+      }
+    } catch (error) {
+      console.error('Error ending quiz:', error);
+    }
   };
 
   useEffect(() => {

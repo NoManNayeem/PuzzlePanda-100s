@@ -29,6 +29,9 @@ const Result = () => {
                     'Authorization': `Bearer ${token}`
                 }
             });
+            if (!response.ok) {
+                throw new Error('Failed to fetch questions');
+            }
             const data = await response.json();
             const formattedData = data.map(question => ({
                 ...question,

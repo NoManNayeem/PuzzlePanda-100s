@@ -2,15 +2,13 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { FaPlay, FaTable, FaMedal, FaQuoteLeft } from "react-icons/fa";
+import { FaPlay, FaTable, FaMedal, FaQuoteLeft, FaChartLine } from "react-icons/fa";
 import PrivateFooter from "./LoggedUserComponents/Private_Footer";
 import PrivateNavBar from "./LoggedUserComponents/Private_NavBar";
 import PrivateHeader from "./LoggedUserComponents/Private_Header";
 import { getCookie, setCookie } from "cookies-next";
 import { profileDetailAPI } from "@/app/DRF_Backend/API";
-import Link from "next/link";
-
-
+import UserPerformanceChart from "./charts/UserPerformanceChart";
 
 const UserPage = () => {
   const [user, setUser] = useState({
@@ -22,6 +20,11 @@ const UserPage = () => {
       wrongAnswers: 0,
     },
   });
+  const [displayMode, setDisplayMode] = useState("chart");
+  const [performanceData, setPerformanceData] = useState([]);
+  const [quote, setQuote] = useState("You Imagine, I craft!");
+  const [author, setAuthor] = useState("Nayeem Islam");
+  const [error, setError] = useState(null);
 
   const router = useRouter();
 
@@ -29,45 +32,46 @@ const UserPage = () => {
     router.push('/user/spin');
   };
 
-  useEffect(() => {
-    const fetchUserData = async () => {
-      const token = getCookie("token");
-      if (!token) {
-        setError("No authentication token found");
-        return;
-      }
-      try {
-        const response = await fetch(profileDetailAPI, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
+  const fetchUserData = async () => {
+    const token = getCookie("token");
+    if (!token) {
+      setError("No authentication token found");
+      return;
+    }
+    try {
+      const response = await fetch(profileDetailAPI, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        const isSubscribed = data.is_subscribed;
+        setCookie("subscription_token", isSubscribed ? "true" : "false", {
+          path: "/",
+        });
+
+        setUser({
+          fullName: data.full_name || "N/A",
+          isSubscribed: isSubscribed,
+          stats: {
+            totalQuizzes: data.total_quizzes || 0,
+            correctAnswers: data.correct_answers || 0,
+            wrongAnswers: data.wrong_answers || 0,
           },
         });
-        if (response.ok) {
-          const data = await response.json();
-          const isSubscribed = data.is_subscribed;
-          setCookie("subscription_token", isSubscribed ? "true" : "false", {
-            path: "/",
-          });
-
-          setUser({
-            fullName: data.full_name || "N/A",
-            isSubscribed: isSubscribed,
-            stats: {
-              totalQuizzes: data.total_quizzes || 0,
-              correctAnswers: data.correct_answers || 0,
-              wrongAnswers: data.wrong_answers || 0,
-            },
-          });
-        } else {
-          setError("Failed to fetch profile data");
-        }
-      } catch (error) {
-        console.error("An error occurred while fetching profile data", error);
+        setPerformanceData(data.performance || []);
+      } else {
+        setError("Failed to fetch profile data");
       }
-    };
+    } catch (error) {
+      console.error("An error occurred while fetching profile data", error);
+    }
+  };
 
+  useEffect(() => {
     fetchUserData();
   }, []);
 
@@ -78,9 +82,6 @@ const UserPage = () => {
       router.push("/user/subscribe");
     }
   };
-
-  const [quote, setQuote] = useState("You Imagine, I craft!");
-  const [author, setAuthor] = useState("Nayeem Islam");
 
   useEffect(() => {
     const apiUrl = "https://api.quotable.io/random";
@@ -102,6 +103,7 @@ const UserPage = () => {
       });
   }, []);
 
+
   return (
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
       <PrivateHeader />
@@ -110,8 +112,8 @@ const UserPage = () => {
         <button
           onClick={handlePlayNowClick}
           className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 ${user.isSubscribed
-              ? 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'
-              : 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-400'
+            ? 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'
+            : 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-400'
             }`}
           aria-label={user.isSubscribed ? 'Play Now' : 'Subscribe Now'}
         >
@@ -119,7 +121,6 @@ const UserPage = () => {
           <span>{user.isSubscribed ? 'Play Now' : 'Subscribe Now'}</span>
         </button>
       </div>
-
 
       <div className="relative flex-grow flex flex-col items-center justify-center py-6">
         <div className="fixed bottom-20 left-auto z-50 animate-pulse">
@@ -142,40 +143,10 @@ const UserPage = () => {
                 <FaTable className="mr-2 text-indigo-500" />
                 Performance
               </h2>
-              <div className="overflow-x-auto">
-                <table className="min-w-full bg-white text-center rounded-lg">
-                  <thead>
-                    <tr>
-                      <th className="px-4 py-2 border-b-2 border-gray-200">
-                        Quizzes
-                      </th>
-                      <th className="px-4 py-2 border-b-2 border-gray-200">
-                        Correct
-                      </th>
-                      <th className="px-4 py-2 border-b-2 border-gray-200">
-                        Wrong
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="px-4 py-2 border-b">
-                        {user.stats.totalQuizzes}
-                      </td>
-                      <td className="px-4 py-2 border-b">
-                        {user.stats.correctAnswers}
-                      </td>
-                      <td className="px-4 py-2 border-b">
-                        {user.stats.wrongAnswers}
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              <UserPerformanceChart/>
             </div>
 
             <div className="border p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
-
               <h2 className="text-2xl font-semibold mb-4 flex items-center">
                 <FaQuoteLeft className="mr-2 text-indigo-500" />
                 Discover:
@@ -191,17 +162,16 @@ const UserPage = () => {
                 <p>Loading quote...</p>
               )}
             </div>
-            <div className="font-[sans-serif]  text-center">
-              <button 
-                type="button" 
+            <div className="font-[sans-serif] text-center">
+              <button
+                type="button"
                 onClick={handleSpinToWinButton}
-                className="px-2 py-2 min-w-[140px] shadow-lg shadow-purple-200 rounded-full text-black text-sm tracking-wider font-medium outline-none border-2 border-purple-600 active:shadow-inner">
-                
-                  Spin To Win!
+                className="px-2 py-2 min-w-[140px] shadow-lg shadow-purple-200 rounded-full text-black text-sm tracking-wider font-medium outline-none border-2 border-purple-600 active:shadow-inner"
+              >
+                Spin To Win!
               </button>
             </div>
           </div>
-
 
           <div className="space-y-8">
             <div className="border p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
