@@ -115,8 +115,6 @@ const Profile = () => {
         const data = await response.json();
         setProfile(data);
         setIsEditing(false);
-        // Set the subscription status cookie
-        setCookie('subscription_token', data.is_subscribed ? 'true' : 'false', { path: '/' });
       } else {
         setError('Failed to create profile');
       }

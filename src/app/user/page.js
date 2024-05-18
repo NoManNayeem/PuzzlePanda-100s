@@ -39,7 +39,7 @@ const UserPage = () => {
         });
         if (response.ok) {
           const data = await response.json();
-          const isSubscribed = data;
+          const isSubscribed = data.is_subscribed;
           setCookie('subscription_token', isSubscribed ? 'true' : 'false', { path: '/' });
 
           setUser({
