@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useEffect, useState } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
@@ -8,28 +10,30 @@ import { userPerformanceAPI } from '@/app/DRF_Backend/API';
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const PerformanceTable = ({ data }) => (
-  <table className="min-w-full bg-white text-center rounded-lg">
-    <thead>
-      <tr>
-        <th className="px-4 py-2 border-b-2 border-gray-200">Date</th>
-        <th className="px-4 py-2 border-b-2 border-gray-200">Correct</th>
-        <th className="px-4 py-2 border-b-2 border-gray-200">Wrong</th>
-        <th className="px-4 py-2 border-b-2 border-gray-200">Total Questions</th>
-        <th className="px-4 py-2 border-b-2 border-gray-200">Total Quizzes Played</th>
-      </tr>
-    </thead>
-    <tbody>
-      {data.map((performance, index) => (
-        <tr key={index}>
-          <td className="px-4 py-2 border-b">{performance.date_played}</td>
-          <td className="px-4 py-2 border-b">{performance.correct_answers}</td>
-          <td className="px-4 py-2 border-b">{performance.wrong_answers}</td>
-          <td className="px-4 py-2 border-b">{performance.total_questions}</td>
-          <td className="px-4 py-2 border-b">{performance.total_quizzes_played}</td>
+  <div className="overflow-x-auto">
+    <table className="min-w-full bg-white text-center rounded-lg">
+      <thead>
+        <tr>
+          <th className="px-4 py-2 border-b-2 border-gray-200">Date</th>
+          <th className="px-4 py-2 border-b-2 border-gray-200">Correct</th>
+          <th className="px-4 py-2 border-b-2 border-gray-200">Wrong</th>
+          <th className="px-4 py-2 border-b-2 border-gray-200">Total Questions</th>
+          <th className="px-4 py-2 border-b-2 border-gray-200">Total Quizzes Played</th>
         </tr>
-      ))}
-    </tbody>
-  </table>
+      </thead>
+      <tbody>
+        {data.map((performance, index) => (
+          <tr key={index}>
+            <td className="px-4 py-2 border-b">{performance.date_played}</td>
+            <td className="px-4 py-2 border-b">{performance.correct_answers}</td>
+            <td className="px-4 py-2 border-b">{performance.wrong_answers}</td>
+            <td className="px-4 py-2 border-b">{performance.total_questions}</td>
+            <td className="px-4 py-2 border-b">{performance.total_quizzes_played}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 );
 
 const UserPerformanceChart = () => {
@@ -112,8 +116,8 @@ const UserPerformanceChart = () => {
   }
 
   return (
-    <div className="performance-container">
-      <div className="view-toggle mb-4">
+    <div className="performance-container max-w-full mx-auto p-4">
+      <div className="view-toggle mb-4 flex justify-center">
         <button
           className={`mr-4 py-2 px-4 text-sm rounded ${view === 'chart' ? 'bg-indigo-500 text-white' : 'bg-gray-200'}`}
           onClick={() => setView('chart')}
@@ -128,11 +132,11 @@ const UserPerformanceChart = () => {
         </button>
       </div>
       {view === 'chart' ? (
-        <div className="chart-container">
+        <div className="chart-container w-full md:w-3/4 lg:w-1/2 mx-auto">
           <Line data={chartData} />
         </div>
       ) : (
-        <div className="table-container">
+        <div className="table-container w-full overflow-x-auto">
           <PerformanceTable data={performanceData} />
         </div>
       )}

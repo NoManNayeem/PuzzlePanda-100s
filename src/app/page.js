@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setCookie } from 'cookies-next';
-import { loginAPI, slidersAPI } from './DRF_Backend/API';
+import { loginAPI } from './DRF_Backend/API';
 import Header from './landingPageComponents/Header';
 import NavBar from './landingPageComponents/NavBar';
 import Slider from './landingPageComponents/Slider';
@@ -21,13 +21,22 @@ export default function Home() {
   const handleLogin = async (e) => {
     e.preventDefault();
 
+    const fullPhoneNumber = `88${phone}`;
+
+    // Validate the phone number
+    const phoneRegex = /^8801\d{9}$/;
+    if (!phoneRegex.test(fullPhoneNumber)) {
+      setError('Invalid phone number. Please enter a valid 13-digit number starting with 8801.');
+      return;
+    }
+
     try {
       const response = await fetch(loginAPI, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username: phone, password }),
+        body: JSON.stringify({ username: fullPhoneNumber, password }),
       });
 
       if (response.ok) {
@@ -48,7 +57,7 @@ export default function Home() {
       <Header />
       <NavBar />
       <Slider />
-      <div className="flex-grow flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-800 p-4">
+      <div className="flex-grow flex items-center justify-center bg-gradient-to-r from-purple-900 to-purple-800 p-4 md:py-8">
         <div className="text-center w-full max-w-md px-4 sm:px-6 lg:px-8">
           <h2 className="text-3xl md:text-4xl text-white font-bold mb-4 animate-pulse">Win an Instant 5,000 Points!</h2>
           <p className="text-white mb-6">Answer 10 questions correctly & win!</p>

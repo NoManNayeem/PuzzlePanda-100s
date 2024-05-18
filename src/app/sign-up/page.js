@@ -20,6 +20,15 @@ const SignUp = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
 
+    const fullPhoneNumber = `88${primaryPhone}`;
+
+    // Validate the phone number
+    const phoneRegex = /^8801\d{9}$/;
+    if (!phoneRegex.test(fullPhoneNumber)) {
+      setError('Invalid phone number. Please enter a valid 13-digit number starting with 8801.');
+      return;
+    }
+
     try {
       const response = await fetch(registerAPI, {
         method: 'POST',
@@ -27,7 +36,7 @@ const SignUp = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          primary_phone: primaryPhone,
+          primary_phone: fullPhoneNumber,
           password,
           operator,
         }),
@@ -69,7 +78,7 @@ const SignUp = () => {
                   type="tel"
                   id="primary_phone"
                   name="primary_phone"
-                  pattern="^880[0-9]{10}$"
+                  pattern="^01[0-9]{9}$"
                   required
                   className="pl-10 pr-4 py-2 border border-gray-300 rounded-md w-full focus:ring-purple-500 focus:border-purple-500"
                   placeholder="Enter your phone number"

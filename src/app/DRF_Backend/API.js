@@ -2,7 +2,7 @@
 
 // Define the base API URL
 const baseAPI = 'http://127.0.0.1:8000';
-// const baseAPI = 'http://127.0.0.1:8000'; // For Local Networks
+// const baseAPI = 'http://192.168.1.101:8000'; // For Local Networks
 
 // Define individual endpoints
 const loginAPI = `${baseAPI}/api/token/`;
