@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { FaPlay, FaTable, FaMedal, FaQuoteLeft } from 'react-icons/fa';
-import PrivateFooter from './LoggedUserComponents/Private_Footer';
-import PrivateNavBar from './LoggedUserComponents/Private_NavBar';
-import PrivateHeader from './LoggedUserComponents/Private_Header';
-import { getCookie, setCookie } from 'cookies-next';
-import { profileDetailAPI } from '@/app/DRF_Backend/API';
+import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { FaPlay, FaTable, FaMedal, FaQuoteLeft } from "react-icons/fa";
+import PrivateFooter from "./LoggedUserComponents/Private_Footer";
+import PrivateNavBar from "./LoggedUserComponents/Private_NavBar";
+import PrivateHeader from "./LoggedUserComponents/Private_Header";
+import { getCookie, setCookie } from "cookies-next";
+import { profileDetailAPI } from "@/app/DRF_Backend/API";
 
 const UserPage = () => {
   const [user, setUser] = useState({
-    fullName: '',
+    fullName: "",
     isSubscribed: false,
     stats: {
       totalQuizzes: 0,
@@ -24,26 +24,28 @@ const UserPage = () => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = getCookie('token');
+      const token = getCookie("token");
       if (!token) {
-        setError('No authentication token found');
+        setError("No authentication token found");
         return;
       }
       try {
         const response = await fetch(profileDetailAPI, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
         });
         if (response.ok) {
           const data = await response.json();
           const isSubscribed = data.is_subscribed;
-          setCookie('subscription_token', isSubscribed ? 'true' : 'false', { path: '/' });
+          setCookie("subscription_token", isSubscribed ? "true" : "false", {
+            path: "/",
+          });
 
           setUser({
-            fullName: data.full_name || 'N/A',
+            fullName: data.full_name || "N/A",
             isSubscribed: isSubscribed,
             stats: {
               totalQuizzes: data.total_quizzes || 0,
@@ -52,10 +54,10 @@ const UserPage = () => {
             },
           });
         } else {
-          setError('Failed to fetch profile data');
+          setError("Failed to fetch profile data");
         }
       } catch (error) {
-        console.error('An error occurred while fetching profile data', error);
+        console.error("An error occurred while fetching profile data", error);
       }
     };
 
@@ -66,7 +68,7 @@ const UserPage = () => {
     if (user.isSubscribed) {
       router.push(`/user/play-now`);
     } else {
-      router.push('/user/subscribe');
+      router.push("/user/subscribe");
     }
   };
 
@@ -74,21 +76,21 @@ const UserPage = () => {
   const [author, setAuthor] = useState("Nayeem Islam");
 
   useEffect(() => {
-    const apiUrl = 'https://api.quotable.io/random';
+    const apiUrl = "https://api.quotable.io/random";
 
     fetch(apiUrl)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
           return response.json();
         } else {
           throw new Error(`Error: ${response.status}`);
         }
       })
-      .then(data => {
+      .then((data) => {
         setQuote(data.content); // Setting the quote text
         setAuthor(data.author); // Setting the quote author
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
   }, []);
@@ -97,18 +99,33 @@ const UserPage = () => {
     <div className="min-h-screen flex flex-col bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 text-white">
       <PrivateHeader />
       <PrivateNavBar />
-      <div className="relative flex-grow flex flex-col items-center justify-center py-12">
+      <div className="flex items-center justify-center mt-2">
+  <button
+    onClick={handlePlayNowClick}
+    className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 ${
+      user.isSubscribed
+        ? 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'
+        : 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-400'
+    }`}
+    aria-label={user.isSubscribed ? 'Play Now' : 'Subscribe Now'}
+  >
+    <FaPlay />
+    <span>{user.isSubscribed ? 'Play Now' : 'Subscribe Now'}</span>
+  </button>
+</div>
+
+      
+      <div className="relative flex-grow flex flex-col items-center justify-center py-6">
         <div className="fixed bottom-20 left-auto z-50 animate-pulse">
           <button
             onClick={handlePlayNowClick}
-            className={`inline-flex items-center justify-center py-4 px-8 rounded-full shadow-lg transition-transform transform hover:scale-110 focus:ring-4 focus:ring-indigo-500 ${
-              user.isSubscribed
-                ? 'bg-green-500 text-white hover:bg-green-600'
-                : 'bg-red-500 text-white hover:bg-red-600'
-            }`}
+            className={`inline-flex items-center justify-center py-4 px-8 rounded-full shadow-lg transition-transform transform hover:scale-110 focus:ring-4 focus:ring-indigo-500 ${user.isSubscribed
+                ? "bg-green-500 text-white hover:bg-green-600"
+                : "bg-red-500 text-white hover:bg-red-600"
+              }`}
           >
             <FaPlay className="mr-2" />
-            {user.isSubscribed ? 'Play Now' : 'Subscribe Now'}
+            {user.isSubscribed ? "Play Now" : "Subscribe Now"}
           </button>
         </div>
 
@@ -116,22 +133,35 @@ const UserPage = () => {
           <div className="space-y-8">
             <div className="border p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
               <h2 className="text-2xl font-semibold mb-4 flex items-center">
-                <FaTable className="mr-2 text-indigo-500" />Performance
+                <FaTable className="mr-2 text-indigo-500" />
+                Performance
               </h2>
               <div className="overflow-x-auto">
                 <table className="min-w-full bg-white text-center rounded-lg">
                   <thead>
                     <tr>
-                      <th className="px-4 py-2 border-b-2 border-gray-200">Quizzes</th>
-                      <th className="px-4 py-2 border-b-2 border-gray-200">Correct</th>
-                      <th className="px-4 py-2 border-b-2 border-gray-200">Wrong</th>
+                      <th className="px-4 py-2 border-b-2 border-gray-200">
+                        Quizzes
+                      </th>
+                      <th className="px-4 py-2 border-b-2 border-gray-200">
+                        Correct
+                      </th>
+                      <th className="px-4 py-2 border-b-2 border-gray-200">
+                        Wrong
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td className="px-4 py-2 border-b">{user.stats.totalQuizzes}</td>
-                      <td className="px-4 py-2 border-b">{user.stats.correctAnswers}</td>
-                      <td className="px-4 py-2 border-b">{user.stats.wrongAnswers}</td>
+                      <td className="px-4 py-2 border-b">
+                        {user.stats.totalQuizzes}
+                      </td>
+                      <td className="px-4 py-2 border-b">
+                        {user.stats.correctAnswers}
+                      </td>
+                      <td className="px-4 py-2 border-b">
+                        {user.stats.wrongAnswers}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -145,7 +175,10 @@ const UserPage = () => {
               </h2>
               {quote ? (
                 <>
-                  <p>{quote}<span className='font-bold mx-2'>-{author}</span></p>
+                  <p>
+                    {quote}
+                    <span className="font-bold mx-2">-{author}</span>
+                  </p>
                 </>
               ) : (
                 <p>Loading quote...</p>
