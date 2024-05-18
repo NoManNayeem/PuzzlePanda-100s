@@ -5,15 +5,13 @@ import { useRouter } from 'next/navigation';
 import Header from '../landingPageComponents/Header';
 import NavBar from '../landingPageComponents/NavBar';
 import Footer from '../landingPageComponents/Footer';
-import { FaLock, FaPhone, FaSimCard } from 'react-icons/fa';
+import { FaLock, FaPhone, FaSimCard, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { registerAPI } from '../DRF_Backend/API';
-
-
-
 
 const SignUp = () => {
   const [primaryPhone, setPrimaryPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [operator, setOperator] = useState('');
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
@@ -84,7 +82,7 @@ const SignUp = () => {
                   <FaLock />
                 </span>
                 <input
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   required
@@ -93,6 +91,12 @@ const SignUp = () => {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
+                <span
+                  className="absolute inset-y-0 right-0 flex items-center pr-3 cursor-pointer"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </div>
               <div className="relative rounded-md shadow-lg">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-purple-600">

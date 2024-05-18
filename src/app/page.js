@@ -1,21 +1,20 @@
 'use client';
 
-
-
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { setCookie } from 'cookies-next';
-import { loginAPI,slidersAPI } from './DRF_Backend/API';
+import { loginAPI, slidersAPI } from './DRF_Backend/API';
 import Header from './landingPageComponents/Header';
 import NavBar from './landingPageComponents/NavBar';
 import Slider from './landingPageComponents/Slider';
 import Footer from './landingPageComponents/Footer';
-import { FaUserSecret } from "react-icons/fa6";
+import { FaUserSecret, FaEye, FaEyeSlash } from "react-icons/fa";
 import Link from 'next/link';
 
 export default function Home() {
   const [phone, setPhone] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState(null);
   const router = useRouter();
 
@@ -34,7 +33,6 @@ export default function Home() {
       if (response.ok) {
         const data = await response.json();
         setCookie('token', data.access, { path: '/' });
-        // setCookie('subscription_token', 'true', { path: '/' });
         router.push('/user');
       } else {
         const errorData = await response.json();
@@ -66,17 +64,20 @@ export default function Home() {
                 onChange={(e) => setPhone(e.target.value)}
               />
             </div>
-            <div className="flex items-center shadow-lg shadow-purple-200 rounded-full overflow-hidden">
+            <div className="flex items-center shadow-lg shadow-purple-200 rounded-full overflow-hidden relative">
               <div className="flex-shrink-0 px-4 py-2 bg-purple-600 text-white shadow-md flex items-center">
                 <FaUserSecret size={25} />
               </div>
               <input
-                type="password"
+                type={showPassword ? "text" : "password"}
                 placeholder="Enter your password"
                 className="flex-grow px-4 py-2 text-black border-0 focus:outline-none shadow-md"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
+              <div className="absolute right-4 cursor-pointer bg-black rounded" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
+              </div>
             </div>
             <button
               className="w-full text-white px-6 py-2 shadow-lg shadow-purple-200 rounded-full text-lg tracking-wider font-medium bg-purple-600 hover:bg-purple-700 active:shadow-inner focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -85,7 +86,7 @@ export default function Home() {
               Login
             </button>
           </form>
-          <p className="text-purple-300 text-sm mt-6"><Link href="/sign-up">Register</Link> Now And Get Free 100 credits!</p>
+          <p className="text-purple-300 text-sm mt-6"><Link href="/sign-up">Register</Link> Now And Get Upto 1000 Free Credits!</p>
         </div>
       </div>
       <Footer />
