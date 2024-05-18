@@ -85,7 +85,7 @@ export default function Home() {
               Login
             </button>
           </form>
-          <p className="text-purple-300 text-sm mt-6"><Link href="/sign-up">Register</Link> now and get free 100 - 500 points</p>
+          <p className="text-purple-300 text-sm mt-6"><Link href="/sign-up">Register</Link> Now And Get Free 100 credits!</p>
         </div>
       </div>
       <Footer />

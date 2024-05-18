@@ -21,6 +21,7 @@ const profileCreateAPI = `${baseAPI}/profile/create/`;
 const quizAPI = `${baseAPI}/quizzes/`;
 const validateResultAPI = `${baseAPI}/validate-result/`;
 const userPerformanceAPI = `${baseAPI}/user-performance/`;
+const spinAPI = `${baseAPI}/spin/`;
 
 // Export the constants
-export { baseAPI, loginAPI, refreshAPI, verifyAPI, registerAPI, faqsAPI, slidersAPI, profileCreateAPI, profileDetailAPI, quizAPI, validateResultAPI, userPerformanceAPI };
+export { baseAPI, loginAPI, refreshAPI, verifyAPI, registerAPI, faqsAPI, slidersAPI, profileCreateAPI, profileDetailAPI, quizAPI, validateResultAPI, userPerformanceAPI,spinAPI };
