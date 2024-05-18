@@ -75,7 +75,7 @@ export default function Home() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <div className="absolute right-4 cursor-pointer bg-black rounded" onClick={() => setShowPassword(!showPassword)}>
+              <div className="absolute right-4 cursor-pointer bg-purple-900 rounded" onClick={() => setShowPassword(!showPassword)}>
                 {showPassword ? <FaEyeSlash size={20} /> : <FaEye size={20} />}
               </div>
             </div>
@@ -86,7 +86,7 @@ export default function Home() {
               Login
             </button>
           </form>
-          <p className="text-purple-300 text-sm mt-6"><Link href="/sign-up">Register</Link> Now And Get Upto 1000 Free Credits!</p>
+          <p className="text-purple-300 text-sm mt-6"><Link href="/sign-up" className='border-b'>Register</Link> Now And Get Upto 1000 Free Credits!</p>
         </div>
       </div>
       <Footer />
