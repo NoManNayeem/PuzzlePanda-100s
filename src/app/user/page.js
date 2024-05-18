@@ -8,6 +8,9 @@ import PrivateNavBar from "./LoggedUserComponents/Private_NavBar";
 import PrivateHeader from "./LoggedUserComponents/Private_Header";
 import { getCookie, setCookie } from "cookies-next";
 import { profileDetailAPI } from "@/app/DRF_Backend/API";
+import Link from "next/link";
+
+
 
 const UserPage = () => {
   const [user, setUser] = useState({
@@ -21,6 +24,10 @@ const UserPage = () => {
   });
 
   const router = useRouter();
+
+  const handleSpinToWinButton = () => {
+    router.push('/user/spin');
+  };
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -100,28 +107,27 @@ const UserPage = () => {
       <PrivateHeader />
       <PrivateNavBar />
       <div className="flex items-center justify-center mt-2">
-  <button
-    onClick={handlePlayNowClick}
-    className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 ${
-      user.isSubscribed
-        ? 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'
-        : 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-400'
-    }`}
-    aria-label={user.isSubscribed ? 'Play Now' : 'Subscribe Now'}
-  >
-    <FaPlay />
-    <span>{user.isSubscribed ? 'Play Now' : 'Subscribe Now'}</span>
-  </button>
-</div>
+        <button
+          onClick={handlePlayNowClick}
+          className={`flex items-center justify-center gap-2 py-3 px-6 rounded-full shadow-md transition-transform transform hover:scale-105 focus:outline-none focus:ring-4 ${user.isSubscribed
+              ? 'bg-green-500 text-white hover:bg-green-600 focus:ring-green-400'
+              : 'bg-red-500 text-white hover:bg-red-600 focus:ring-red-400'
+            }`}
+          aria-label={user.isSubscribed ? 'Play Now' : 'Subscribe Now'}
+        >
+          <FaPlay />
+          <span>{user.isSubscribed ? 'Play Now' : 'Subscribe Now'}</span>
+        </button>
+      </div>
 
-      
+
       <div className="relative flex-grow flex flex-col items-center justify-center py-6">
         <div className="fixed bottom-20 left-auto z-50 animate-pulse">
           <button
             onClick={handlePlayNowClick}
             className={`inline-flex items-center justify-center py-4 px-8 rounded-full shadow-lg transition-transform transform hover:scale-110 focus:ring-4 focus:ring-indigo-500 ${user.isSubscribed
-                ? "bg-green-500 text-white hover:bg-green-600"
-                : "bg-red-500 text-white hover:bg-red-600"
+              ? "bg-green-500 text-white hover:bg-green-600"
+              : "bg-red-500 text-white hover:bg-red-600"
               }`}
           >
             <FaPlay className="mr-2" />
@@ -169,6 +175,7 @@ const UserPage = () => {
             </div>
 
             <div className="border p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
+
               <h2 className="text-2xl font-semibold mb-4 flex items-center">
                 <FaQuoteLeft className="mr-2 text-indigo-500" />
                 Discover:
@@ -184,7 +191,17 @@ const UserPage = () => {
                 <p>Loading quote...</p>
               )}
             </div>
+            <div className="font-[sans-serif]  text-center">
+              <button 
+                type="button" 
+                onClick={handleSpinToWinButton}
+                className="px-2 py-2 min-w-[140px] shadow-lg shadow-purple-200 rounded-full text-black text-sm tracking-wider font-medium outline-none border-2 border-purple-600 active:shadow-inner">
+                
+                  Spin To Win!
+              </button>
+            </div>
           </div>
+
 
           <div className="space-y-8">
             <div className="border p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
