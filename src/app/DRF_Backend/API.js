@@ -23,5 +23,36 @@ const validateResultAPI = `${baseAPI}/validate-result/`;
 const userPerformanceAPI = `${baseAPI}/user-performance/`;
 const spinAPI = `${baseAPI}/spin/`;
 
+
+
+const subscribeDigimartAPI = `${baseAPI}/digimart/generate-api-endpoint/`;
+const unsubscribeDigimartAPI = `${baseAPI}/digimart/unsubscribe/`;
+const confirmNotificationDigimartAPI = `${baseAPI}/digimart/confirm-notification/`;
+const noftifyMeDigimartAPI = `${baseAPI}/digimart/notify-me/`;
+const checkSubscriptionDigimartAPI = `${baseAPI}/digimart/check-subscription/`;
+
+
 // Export the constants
-export { baseAPI, loginAPI, refreshAPI, verifyAPI, registerAPI, faqsAPI, slidersAPI, profileCreateAPI, profileDetailAPI, quizAPI, validateResultAPI, userPerformanceAPI,spinAPI };
+export { 
+    baseAPI, 
+    loginAPI, 
+    refreshAPI, 
+    verifyAPI, 
+    registerAPI, 
+    faqsAPI, 
+    slidersAPI, 
+    profileCreateAPI, 
+    profileDetailAPI, 
+    quizAPI, 
+    validateResultAPI, 
+    userPerformanceAPI,
+    spinAPI,
+
+    subscribeDigimartAPI,
+    unsubscribeDigimartAPI,
+    confirmNotificationDigimartAPI,
+    noftifyMeDigimartAPI,
+    checkSubscriptionDigimartAPI,
+
+
+};
