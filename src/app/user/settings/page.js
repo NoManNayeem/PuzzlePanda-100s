@@ -1,15 +1,24 @@
 'use client'
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { FaCheck, FaBell, FaBellSlash } from 'react-icons/fa';
 import PrivateFooter from '../LoggedUserComponents/Private_Footer';
 import PrivateHeader from '../LoggedUserComponents/Private_Header';
 import PrivateNavBar from '../LoggedUserComponents/Private_NavBar';
+import { checkSubscriptionDigimartAPI } from '@/app/DRF_Backend/API';
+import { getCookie } from "cookies-next";
 
 export default function Settings() {
   const [subscriptionStatus, setSubscriptionStatus] = useState('Unknown');
   const router = useRouter();
+
+  useEffect(() => {
+    const subStatus = getCookie('subscription_token');
+    if (subStatus) {
+      setSubscriptionStatus(subStatus);
+    }
+  }, []);
 
   const handleSubscribe = () => {
     router.push('/user/subscribe');
@@ -17,13 +26,19 @@ export default function Settings() {
 
   const handleUnsubscribe = () => {
     // Placeholder for backend API call to unsubscribe
-    setSubscriptionStatus('Unsubscribed');
-    alert('You have been unsubscribed');
+    router.push('/user/unsubscribe');
+    alert('You are about to unsubscribe?');
   };
 
-  const handleCheckSubscription = () => {
-    // Placeholder for backend API call to check subscription status
-    alert(`Subscription status: ${subscriptionStatus}`);
+  const handleCheckSubscription = async () => {
+    try {
+      const response = await checkSubscriptionDigimartAPI();
+      setSubscriptionStatus(response.status);
+      alert(`Subscription status: ${response.status}`);
+    } catch (error) {
+      console.error('Error checking subscription status:', error);
+      alert('Failed to check subscription status.');
+    }
   };
 
   return (
@@ -56,7 +71,7 @@ export default function Settings() {
             <div className="bg-red-100 border border-red-200 rounded-lg p-4 shadow-md transform transition duration-300 hover:scale-105">
               <h2 className="text-xl font-bold mb-2 flex items-center space-x-2">
                 <FaBellSlash className="text-red-900" />
-                <span  className="text-red-900">Unsubscribe</span>
+                <span className="text-red-900">Unsubscribe</span>
               </h2>
               <p className="mb-4 text-red-600">
                 We're sad to see you go. If you must, you can unsubscribe here. 😢
