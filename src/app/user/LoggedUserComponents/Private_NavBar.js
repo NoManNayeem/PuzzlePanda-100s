@@ -5,6 +5,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { FaSignOutAlt, FaUser } from "react-icons/fa";
+import { IoMdSettings } from "react-icons/io";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 
@@ -58,18 +59,22 @@ export default function PrivateNavBar() {
               strokeLinecap="round"
               strokeLinejoin="round"
               strokeWidth={2}
-              d="M4 6h16M4 12h16m-7 6h7"
+              d={isOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16m-7 6h7"}
             />
           </svg>
         </button>
         <div className="hidden md:flex space-x-4">
-          <Link href="/user/profile" className="flex items-center hover:text-purple-300">
+          <Link href="/user/settings" className="flex items-center hover:text-gray-300 transition duration-300 ease-in-out">
+            <IoMdSettings className="mr-2" />
+            Settings
+          </Link>
+          <Link href="/user/profile" className="flex items-center hover:text-gray-300 transition duration-300 ease-in-out">
             <FaUser className="mr-2" />
             Profile
           </Link>
           <button
             onClick={handleLogout}
-            className="p-2 bg-red-600 text-white flex items-center rounded hover:bg-red-700 transition duration-300"
+            className="p-2 bg-red-600 text-white flex items-center rounded hover:bg-red-700 transition duration-300 ease-in-out"
           >
             <FaSignOutAlt className="mr-2" />
             Logout
@@ -79,15 +84,22 @@ export default function PrivateNavBar() {
       <div id="mobile-menu" className={`md:hidden ${isOpen ? "block" : "hidden"} transition duration-300 ease-in-out`}>
         <div className="flex flex-col space-y-4 mt-4">
           <Link
+            href="/user/settings"
+            className="p-2 bg-purple-600 text-white flex items-center rounded hover:bg-purple-700 transition duration-300 ease-in-out"
+          >
+            <IoMdSettings className="mr-2" />
+            Settings
+          </Link>
+          <Link
             href="/user/profile"
-            className="p-2 bg-blue-600 text-white flex items-center rounded hover:bg-blue-700 transition duration-300"
+            className="p-2 bg-purple-600 text-white flex items-center rounded hover:bg-purple-700 transition duration-300 ease-in-out"
           >
             <FaUser className="mr-2" />
             Profile
           </Link>
           <button
             onClick={handleLogout}
-            className="p-2 bg-red-600 text-white flex items-center rounded hover:bg-red-700 transition duration-300"
+            className="p-2 bg-red-600 text-white flex items-center rounded hover:bg-red-700 transition duration-300 ease-in-out"
           >
             <FaSignOutAlt className="mr-2" />
             Logout
