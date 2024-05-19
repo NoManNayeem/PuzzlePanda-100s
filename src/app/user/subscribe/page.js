@@ -69,37 +69,45 @@ const SubscribePage = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gradient-to-r from-blue-100 to-purple-200">
       <PrivateHeader />
       <PrivateNavBar />
-      <div className="flex-grow bg-gray-100 text-black flex flex-col items-center justify-center p-4">
-        <h1 className="text-4xl font-bold text-center mb-6">Subscribe to PuzzlePanda!</h1>
-        <div className="grid grid-cols-1 gap-4">
-          <div key={digimartOption.name} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center">
-            <img src={digimartOption.logo} alt={`${digimartOption.name} Logo`} className="w-full h-16 mb-4" />
+      <div className="flex-grow flex flex-col items-center justify-center p-6">
+        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">Subscribe to PuzzlePanda!</h1>
+        <div className="grid grid-cols-1 gap-6 w-full max-w-md">
+          <div className="bg-white rounded-lg shadow-xl p-6 flex flex-col items-center text-center transform hover:scale-105 transition-transform">
+            <img src={digimartOption.logo} alt={`${digimartOption.name} Logo`} className="w-32 h-32 mb-6 object-contain" />
             {!redirectUrl ? (
               <>
                 <button
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-blue-600 mb-4"
+                  className="bg-blue-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-blue-700 transition-colors mb-4"
                   onClick={handleSubscribeNow}
                   disabled={loading}
                 >
-                  {loading ? 'Loading...' : `Subscribe Now with ${digimartOption.name}`}
+                  {loading ? (
+                    <div className="loader"></div>
+                  ) : (
+                    `Subscribe Now with ${digimartOption.name}`
+                  )}
                 </button>
-                <form onSubmit={handleSubscribeWithPhone} className="w-full flex flex-col items-center">
+                <form onSubmit={handleSubscribeWithPhone} className="w-full flex items-center space-x-2">
                   <input
                     type="text"
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
-                    className="border rounded-md px-4 py-2 mb-4 w-full"
-                    placeholder="Enter your phone number"
+                    className="border rounded-full text-black px-4 py-3 w-full shadow-md focus:ring-2 focus:ring-blue-600"
+                    placeholder="Subscriber With Different Phone"
                   />
                   <button
                     type="submit"
-                    className="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600"
+                    className="bg-green-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-green-700 transition-colors"
                     disabled={loading}
                   >
-                    {loading ? 'Loading...' : `Subscribe with Another Phone`}
+                    {loading ? (
+                      <div className="loader"></div>
+                    ) : (
+                      `Subscribe`
+                    )}
                   </button>
                 </form>
               </>
@@ -107,7 +115,7 @@ const SubscribePage = () => {
               <Link
                 href={redirectUrl}
                 passHref
-                className="bg-green-500 text-white px-4 py-2 rounded-md shadow-md hover:bg-green-600"
+                className="bg-green-600 text-white px-6 py-3 rounded-full shadow-lg hover:bg-green-700 transition-colors"
                 target="_blank"
                 rel="noopener noreferrer"
               >
@@ -115,7 +123,7 @@ const SubscribePage = () => {
               </Link>
             ) : (
               <button
-                className="bg-gray-500 text-white px-4 py-2 rounded-md shadow-md"
+                className="bg-gray-500 text-white px-6 py-3 rounded-full shadow-lg"
                 disabled
               >
                 Preparing link...
@@ -123,9 +131,23 @@ const SubscribePage = () => {
             )}
           </div>
         </div>
-        {error && <p className="text-red-500">{error}</p>}
+        {error && <p className="text-red-500 mt-4">{error}</p>}
       </div>
       <PrivateFooter />
+      <style jsx>{`
+        .loader {
+          border: 4px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 4px solid #3498db;
+          width: 20px;
+          height: 20px;
+          animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+      `}</style>
     </div>
   );
 };
