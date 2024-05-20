@@ -54,7 +54,7 @@ const UnsubscribePage = () => {
       <PrivateHeader />
       <PrivateNavBar />
       <div className="flex-grow bg-gray-100 text-black flex flex-col items-center justify-center p-4">
-        <h1 className="text-4xl font-bold text-center mb-6">Unsubscribe from PuzzlePanda</h1>
+        <h1 className="text-xl font-bold text-center mb-6">Sure not to give another try! :PuzzlePanda</h1>
         <div className="grid grid-cols-1 gap-4">
           <div className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center">
             <button
