@@ -7,15 +7,19 @@ import { useState } from 'react';
 import { getCookie } from 'cookies-next';
 import axios from 'axios';
 import { unsubscribeDigimartAPI } from '@/app/DRF_Backend/API';
+import Link from 'next/link';
+
 
 const UnsubscribePage = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   const handleUnsubscription = async () => {
     const token = getCookie('token');
     setLoading(true);
     setError('');
+    setSuccess('');
 
     try {
       const response = await axios.post(
@@ -27,9 +31,16 @@ const UnsubscribePage = () => {
           },
         }
       );
+
+      if (response.status === 200) {
+        setSuccess('You have successfully unsubscribed.');
+        localStorage.removeItem('subscription_token');
+      } else {
+        setError('Failed to unsubscribe. Please try again.');
+      }
+
       console.log('Unsubscription Response:', response.data);
       // Handle the response as needed, for example, update the UI or notify the user
-      localStorage.removeItem('subscription_token');
     } catch (error) {
       console.error('Error unsubscribing:', error);
       setError('Failed to unsubscribe. Please try again.');
@@ -53,9 +64,18 @@ const UnsubscribePage = () => {
             >
               {loading ? 'Loading...' : 'Unsubscribe'}
             </button>
+
+
+            <button
+              className="bg-green-500 text-white px-4 py-2 mt-4 rounded-md shadow-md hover:bg-green-600"
+            >
+              
+            <Link className='mt-5 text-green' href="/">Home</Link>
+            </button>
           </div>
         </div>
-        {error && <p className="text-red-500">{error}</p>}
+        {success && <p className="text-green-500 mt-4">{success}</p>}
+        {error && <p className="text-red-500 mt-4">{error}</p>}
       </div>
       <PrivateFooter />
     </div>
