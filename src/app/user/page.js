@@ -31,7 +31,10 @@ const UserPage = () => {
   const handleSpinToWinButton = () => {
     router.push('/user/spin');
   };
-
+  
+  const handleTryFree = () => {
+    router.push('/user/try-free');
+  };
   const fetchUserData = async () => {
     const token = getCookie("token");
     if (!token) {
@@ -144,6 +147,16 @@ const UserPage = () => {
                 Performance
               </h2>
               <UserPerformanceChart/>
+            </div>
+            
+            <div className="font-[sans-serif] text-center">
+              <button
+                type="button"
+                onClick={handleTryFree}
+                className="px-2 py-2 min-w-[140px] shadow-lg shadow-green-200 rounded-full text-black text-sm tracking-wider font-medium outline-none border-2 border-green-600 active:shadow-inner"
+              >
+                Try Free!
+              </button>
             </div>
 
             <div className="border p-4 rounded-lg shadow-sm hover:shadow-lg transition-shadow duration-300">
