@@ -4,7 +4,7 @@ import pandalogo from "../../../../public/panda.png";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { FaSignOutAlt, FaUser } from "react-icons/fa";
+import { FaSignOutAlt, FaUser, FaDashcube } from "react-icons/fa";
 import { IoMdSettings } from "react-icons/io";
 import { deleteCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
@@ -64,6 +64,10 @@ export default function PrivateNavBar() {
           </svg>
         </button>
         <div className="hidden md:flex space-x-4">
+          <Link href="/user/dashboard" className="flex items-center hover:text-gray-300 transition duration-300 ease-in-out">
+            <FaDashcube className="mr-2" />
+            Dashboard
+          </Link>
           <Link href="/user/settings" className="flex items-center hover:text-gray-300 transition duration-300 ease-in-out">
             <IoMdSettings className="mr-2" />
             Settings
@@ -83,6 +87,14 @@ export default function PrivateNavBar() {
       </div>
       <div id="mobile-menu" className={`md:hidden ${isOpen ? "block" : "hidden"} transition duration-300 ease-in-out`}>
         <div className="flex flex-col space-y-4 mt-4">
+          
+        <Link
+            href="/user/dashboard"
+            className="p-2 bg-purple-600 text-white flex items-center rounded hover:bg-purple-700 transition duration-300 ease-in-out"
+          >
+            <FaDashcube className="mr-2" />
+            Dashboard
+          </Link>
           <Link
             href="/user/settings"
             className="p-2 bg-purple-600 text-white flex items-center rounded hover:bg-purple-700 transition duration-300 ease-in-out"
