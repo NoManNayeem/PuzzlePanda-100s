@@ -121,9 +121,9 @@ const SignUp = () => {
                 >
                   <option value="" disabled>Select Operator</option>
                   <option value="GP">Grameenphone</option>
-                  <option value="BL">Banglalink</option>
-                  <option value="RA">Robi/Airtel</option>
-                  <option value="TT">Teletalk</option>
+                  <option disabled value="BL">Banglalink</option>
+                  <option disabled value="RA">Robi/Airtel</option>
+                  <option disabled value="TT">Teletalk</option>
                 </select>
               </div>
               <button
