@@ -158,9 +158,6 @@ const Profile = () => {
                       <p className="text-black mb-2">
                         <strong>Primary Phone:</strong> {profile.primary_phone}
                       </p>
-                      <p className="text-black mb-2">
-                        <strong>Subscription Phone:</strong> {profile.subscription_phone}
-                      </p>
                       <p className="text-black">
                         <strong>Operator:</strong> {profile.operator}
                       </p>
@@ -191,16 +188,6 @@ const Profile = () => {
                       type="text"
                       name="primary_phone"
                       value={formData.primary_phone}
-                      onChange={handleInputChange}
-                      className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                    />
-                  </div>
-                  <div>
-                    <label className="block text-gray-700">Subscription Phone</label>
-                    <input
-                      type="text"
-                      name="subscription_phone"
-                      value={formData.subscription_phone}
                       onChange={handleInputChange}
                       className="w-full px-4 py-2 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"
                     />
